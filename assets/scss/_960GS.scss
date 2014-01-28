@@ -1,0 +1,288 @@
+/*	960 Grid System ~ Core CSS - SCSS Version.
+	Learn more ~ http://960.gs/
+	Modified by Daniel De Guzman @d2g45
+
+	Licensed under GPL and MIT.
+
+	Forces backgrounds to span full width,	even if there is horizontal scrolling.
+	Increase this if your layout is wider.
+		Note: IE6 works fine without this fix.
+*/
+
+/*	1. VARIABLES
+	==============================================================================
+		OPTIONS		12-col	16col	24col
+		base		80		60		40
+		gutter		10		10		05
+		column		12		16		24
+*/
+$base	: 80px;		//	base grid width
+$width	: 960px;	//	base page width
+$gutter	: 10px;		//	gutter width - padding between grids
+$column	: 12;		//	number of columns
+$rtl	: false;	//	is right align
+
+/* containers */
+$grids		: ();
+$pushes		: ();
+$pulls		: ();
+$prefixes	: ();
+$suffixes	: ();
+
+
+/*	2. FUNCTIONS
+	==============================================================================*/
+@function calc-pixel($x){
+	@return $base * $x;
+}
+
+@function grid-width($x){
+	@return calc-pixel($x) - ( $gutter * 2 );
+}
+
+
+/*	3. DEFINITIONS
+	==============================================================================*/
+
+/* grid children */
+.container{
+	margin: 0 auto;
+	width: $width;
+}
+
+@for $i from 1 through $column{
+
+	$grids	: join($grids, unquote(".grid_#{$i} "), comma);
+	$pushes : join($pushes, unquote(".push_#{$i} "), comma);
+	$pulls 	: join($pulls, unquote(".pull_#{$i} "), comma);
+
+	.grid_#{$i}{
+		width: grid-width($i);
+
+		&.no-gutters{
+			width: calc-pixel($i);
+			@extend .alpha;
+			@extend .omega;
+		}
+	}
+}
+
+@for $i from 1 to $column{
+
+	$prefixes : join($prefixes, unquote(".prefix_#{$i} "), comma);
+	$suffixes : join($suffixes, unquote(".suffix_#{$i} "), comma);
+
+	$align : left;
+	@if($rtl){
+		$align:right;
+	}
+
+	.prefix_#{$i}{
+		padding-#{$align}: calc-pixel($i);
+	}
+
+	.pull_#{$i}{
+		#{$align}: calc-pixel(-$i);
+	}
+
+	.push_#{$i}{
+		#{$align}: calc-pixel($i);
+	}
+
+	.suffix_#{$i}{
+		$align : right;
+		@if($rtl){
+			$align:left;
+		}
+
+		padding-#{$align}: calc-pixel($i);
+	}
+}
+
+/* global */
+#{$grids}{
+	$align:left;
+	@if($rtl){
+		$align: right;
+	}
+	float:$align;
+	display:inline;
+	position: relative;
+	margin-left: $gutter;
+	margin-right: $gutter;
+}
+
+.alpha {
+	$align: left;
+	@if($rtl){
+		$align:right;
+	}
+
+	margin-#{$align}:0;
+}
+.omega {
+	$align: right;
+	@if($rtl){
+		$align:left;
+	}
+
+	margin-#{$align}:0;
+}
+
+#{$pushes}, #{$pulls}{
+	position:relative;
+}
+
+/* Smaller than standard 960 (devices and browsers) */
+@media only screen and (max-width: 959px) {}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+	.container{
+		width:768px;
+	}
+
+	@for $i from 1 through $column{
+		.grid_#{$i}{
+			width: ( grid-width($i)/1.25 ) - 2;
+
+			&.no-gutters{
+				width: calc-pixel($i)/1.25;
+				@extend .alpha;
+				@extend .omega;
+			}
+		}
+	}
+
+	@for $i from 1 to $column{
+		$align : left;
+		@if($rtl){
+			$align:right;
+		}
+
+		.prefix_#{$i}{
+			padding-#{$align}: ( calc-pixel($i)/1.25 ) - 2;
+		}
+
+		.pull_#{$i}{
+			#{$align}: ( calc-pixel(-$i)/1.25 ) - 2;
+		}
+
+		.push_#{$i}{
+			#{$align}: ( calc-pixel($i)/1.25 ) - 2;
+		}
+
+		.suffix_#{$i}{
+			$align : right;
+			@if($rtl){
+				$align:left;
+			}
+
+			padding-#{$align}: ( calc-pixel($i)/1.25 ) - 2;
+		}
+	}
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {}
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	.container{
+		min-width: 420px;
+		width:420px;
+	}
+
+	@for $i from 1 through $column{
+		.grid_#{$i}{
+			width:420px;
+			margin-left: 0;
+			margin-right: 0;
+
+			&.no-gutters{
+				width:420px;
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+	}
+
+	#{$prefixes}, #{$suffixes},#{$pushes}, #{$pulls}{
+		left: 0;
+		right: 0;
+		padding-left:0;
+		padding-right: 0;
+	}
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+	.container{
+		min-width: 300px;
+		width:300px;
+	}
+
+	@for $i from 1 through $column{
+		.grid_#{$i}{
+			width:300px;
+			margin-left: 0;
+			margin-right: 0;
+
+			&.no-gutters{
+				width:300px;
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+	}
+
+	#{$prefixes}, #{$suffixes},#{$pushes}, #{$pulls}{
+		left: 0;
+		right: 0;
+		padding-left:0;
+		padding-right: 0;
+	}
+}
+
+
+/* `Clear Floated Elements
+----------------------------------------------------------------------------------------------------*/
+/* http://sonspring.com/journal/clearing-floats */
+.clear {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+/* http://www.yuiblog.com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified */
+.clear:before,
+.clear:after,
+.container:before,
+.container:after {
+	content: '.';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	font-size: 0;
+	line-height: 0;
+	width: 0;
+	height: 0;
+}
+
+.clear:after,
+.container:after {
+	clear: both;
+}
+
+/*
+	The following zoom:1 rule is specifically for IE6 + IE7.
+	Move to separate stylesheet if invalid CSS is a problem.
+*/
+
+.clear,
+.container{
+	zoom: 1;
+}

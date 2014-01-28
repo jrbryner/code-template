@@ -1,0 +1,22 @@
+{
+  "name": "code-template",
+  "version": "0.0.0",
+  "description": "This is a project set up to outline what Level2D uses.",
+  "main": "Gruntfile.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/level2d/code-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/level2d/code-template/issues"
+  },
+  "homepage": "https://github.com/level2d/code-template"
+}
